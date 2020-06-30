@@ -1,7 +1,5 @@
 package se.lexicon.data;
 
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
-import org.jcp.xml.dsig.internal.SignerOutputStream;
 import se.lexicon.entity.DbSource;
 import se.lexicon.model.Person;
 
@@ -136,18 +134,24 @@ public class PeopleRep implements People{
     @Override
     public boolean deleteById(int id) {
 
-        boolean row = false;
+        boolean deleted = false;
 
         try(Connection connection = DbSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(DELETE)){
                 statement.setInt(1,id);
-                System.out.println(statement.executeUpdate());
-                row = true;
+                if(statement.executeUpdate() != 0){
+                    System.out.println("Person deleted from database");
+                    deleted = true;
+                } else {
+                    System.out.println("There is no one with that ID");
+                    deleted = false;
+                }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return row;
+        return deleted;
     }
 
     /** Create sets **/

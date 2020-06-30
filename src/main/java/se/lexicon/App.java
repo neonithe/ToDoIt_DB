@@ -26,24 +26,22 @@ public class App
         /** Tests person **/
         //createPerson("Sofia2", "Sonesson2");
         //update("Emma", "Svensson");
-        findById(1);
+        //findById(1);
         //findAlles();
         //findByName("Ma");
-        delete(8);
+        //delete(10);
         /** Test person end **/
+
+        /** Test ToDo **/
+
 
 
 
 
     }
-    public static void delete(int id){
-
-        if(runPerson.deleteById(id)){
-            System.out.println("Person deleted");
-        } else {
-            System.out.println("Cannot delete");
-        }
-
+    public static void delete(int id) throws SQLException {
+        connection();
+        runPerson.deleteById(id);
     }
 
     public static void connection() throws SQLException {
