@@ -2,8 +2,7 @@ package se.lexicon.data;
 
 import se.lexicon.model.Person;
 import se.lexicon.model.ToDo;
-
-import java.util.Collection;
+import java.util.List;
 
 public class ToDoItemsRep implements ToDoItems{
     @Override
@@ -12,7 +11,7 @@ public class ToDoItemsRep implements ToDoItems{
     }
 
     @Override
-    public Collection<ToDo> findAll() {
+    public List<ToDo> findAll() {
         return null;
     }
 
@@ -22,17 +21,17 @@ public class ToDoItemsRep implements ToDoItems{
     }
 
     @Override
-    public Collection<ToDo> findByDoneStatus(boolean status) {
+    public List<ToDo> findByDoneStatus(boolean status) {
         return null;
     }
 
     @Override
-    public Collection<ToDo> findByAssignee(Person person) {
+    public List<ToDo> findByAssignee(Person person) {
         return null;
     }
 
     @Override
-    public Collection<ToDo> findByUnassignedToDoItems() {
+    public List<ToDo> findByUnassignedToDoItems() {
         return null;
     }
 

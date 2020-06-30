@@ -1,16 +1,14 @@
 package se.lexicon.data;
 
 import se.lexicon.model.Person;
-import se.lexicon.model.ToDo;
-
-import java.util.Collection;
+import java.util.List;
 
 public interface People {
 
-    People create(Person person);
-    Collection<Person> findAll();
+    Person create(Person person);
+    List<Person> findAll();
     Person findById(int id);
-    Collection<Person> findByName(String name);
+    List<Person> findByName(String name);
     Person upDate(Person person);
     boolean deleteById(int id);
 
