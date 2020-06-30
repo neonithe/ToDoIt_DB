@@ -1,5 +1,7 @@
 package se.lexicon.model;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class ToDo {
@@ -7,11 +9,11 @@ public class ToDo {
     private int id;
     private String title;
     private String description;
-    private String deadLine;
+    private LocalDate deadLine;
     private boolean done;
-    private int assigneeId;
+    private Integer assigneeId;
 
-    public ToDo(int id, String title, String description, String deadLine, boolean done, int assigneeId) {
+    public ToDo(int id, String title, String description, LocalDate deadLine, boolean done,Integer assigneeId) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -20,11 +22,12 @@ public class ToDo {
         this.assigneeId = assigneeId;
     }
 
-    public ToDo(String title, String description, String deadLine, boolean done) {
+    public ToDo(String title, String description, LocalDate deadLine, boolean done, Integer assigneeId) {
         this.title = title;
         this.description = description;
         this.deadLine = deadLine;
         this.done = done;
+        this.assigneeId = assigneeId;
     }
 
     public int getId() {
@@ -47,11 +50,11 @@ public class ToDo {
         this.description = description;
     }
 
-    public String getDeadLine() {
+    public LocalDate getDeadLine() {
         return deadLine;
     }
 
-    public void setDeadLine(String deadLine) {
+    public void setDeadLine(LocalDate deadLine) {
         this.deadLine = deadLine;
     }
 
@@ -67,7 +70,7 @@ public class ToDo {
         return assigneeId;
     }
 
-    public void setAssigneeId(int assigneeId) {
+    public void setAssigneeId(Integer assigneeId) {
         this.assigneeId = assigneeId;
     }
 

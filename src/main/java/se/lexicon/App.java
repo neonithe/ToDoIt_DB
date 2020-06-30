@@ -9,6 +9,7 @@ import se.lexicon.model.Person;
 import se.lexicon.model.ToDo;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 /**
  * Hello world!
@@ -34,11 +35,70 @@ public class App
 
         /** Test ToDo **/
 
+        //createTodo("Test to set null","Do something",LocalDate.parse("2020-01-01"),false, );
 
+        //findAllTodo();
+        //findByIdTodo(11);
+        //findDoneTodo(true);
 
-
-
+        //Person person = runPerson.findById(4);
+        //findByAssignee(person);
+        //findAllUnassigned();
+        //updateToDo(4,"NEW TITLE","NOTHING NEW",LocalDate.parse("2020-01-01"),false,4);
+        deleteToDo(21);
     }
+    /** Methods for TODO start **/
+    public static void createTodo(String title, String description, LocalDate date, boolean done, int person) throws SQLException {
+        connection();
+        ToDo todo = new ToDo(title,description,date,done, person);
+        runTodo.create(todo);
+        System.out.println("Todo created to database");
+    }
+    public static void findAllTodo() throws SQLException {
+        connection();
+        runTodo.findAll().forEach(System.out::println);
+    }
+    public static void findByIdTodo(int id) throws SQLException {
+        connection();
+        if(runTodo.findById(id) != null){
+            System.out.println(runTodo.findById(id));
+        } else {
+            System.out.println("Cannot find person by id");
+        }
+    }
+    public static void findDoneTodo(boolean done) throws SQLException {
+        connection();
+        runTodo.findByDoneStatus(done).forEach(System.out::println);
+    }
+    public static void findByAssignee(Person person) throws SQLException {
+        connection();
+        runTodo.findByAssignee(person).forEach(System.out::println);
+    }
+    public static void findAllUnassigned() throws SQLException {
+        connection();
+        runTodo.findByUnassignedToDoItems().forEach(System.out::println);
+    }
+    public static void updateToDo(int findId, String title, String desc, LocalDate date, boolean done, int id) throws SQLException {
+        connection();
+        ToDo todoId = runTodo.findById(findId);
+
+        todoId.setTitle(title);
+        todoId.setDescription(desc);
+        todoId.setDeadLine(date);
+        todoId.setDone(done);
+        todoId.setAssigneeId(id);
+
+        System.out.println(runTodo.upDate(todoId));
+        System.out.println("ToDo updated");
+    }
+    public static void deleteToDo(int id) throws SQLException {
+        connection();
+        runTodo.deleteById(id);
+    }
+    /** Methods for TODO end **/
+
+
+    /** Methods for person start **/
     public static void delete(int id) throws SQLException {
         connection();
         runPerson.deleteById(id);
@@ -86,5 +146,6 @@ public class App
         connection();
         runPerson.findByName(name).forEach(System.out::println);
     }
+    /** Methods for person end **/
 
 }
