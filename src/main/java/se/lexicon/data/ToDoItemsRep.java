@@ -10,6 +10,7 @@ import java.util.List;
 
 public class ToDoItemsRep implements ToDoItems{
 
+    /** SQL queries (Command lines) **/
     private static final String FIND_ALL        = "SELECT * FROM todo_item";
     private static final String FIND_BY_ID      = "SELECT * FROM todo_item WHERE todo_id = ?";
     private static final String FIND_ALL_DONE   = "SELECT * FROM todo_item WHERE done = ?";
@@ -17,6 +18,7 @@ public class ToDoItemsRep implements ToDoItems{
     private static final String FIND_UNASSIGNED = "SELECT * FROM todo_item WHERE assignee_id IS NULL";
     private static final String UPDATE          = "UPDATE todo_item SET title = ?, description = ?, deadline = ?, done = ?, assignee_id = ? WHERE todo_id = ?";
     private static final String DELETE          = "DELETE FROM todo_item WHERE todo_id = ?";
+    private static final String CREATE_TODO     = "INSERT INTO todo_item (title, description, deadline, done, assignee_id) VALUES (?,?,?,?,?)";
 
     @Override
     public ToDo create(ToDo todo) {
@@ -30,12 +32,9 @@ public class ToDoItemsRep implements ToDoItems{
         PreparedStatement statement = null;
         ResultSet keySet = null;
 
-        //SQL Command Line
-        String command = "INSERT INTO todo_item (title, description, deadline, done, assignee_id) VALUES (?,?,?,?,?)";
-
         try {
             connection = DbSource.getConnection();
-            statement = connection.prepareStatement(command, Statement.RETURN_GENERATED_KEYS);
+            statement = connection.prepareStatement(CREATE_TODO, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, todo.getTitle());
             statement.setString(2, todo.getDescription());
             statement.setDate(3, Date.valueOf(todo.getDeadLine()));
@@ -170,7 +169,7 @@ public class ToDoItemsRep implements ToDoItems{
             statement.setString(2,todo.getDescription());
             statement.setDate(3, Date.valueOf(todo.getDeadLine()));
             statement.setBoolean(4,todo.isDone());
-            statement.setInt(5,todo.getAssigneeId());
+            statement.setObject(5,todo.getAssigneeId(), java.sql.Types.INTEGER);
             statement.setInt(6,todo.getId());
 
             statement.execute();
@@ -205,7 +204,7 @@ public class ToDoItemsRep implements ToDoItems{
         return deleted;
     }
 
-    /** Create sets **/
+    /** Create queries sets **/
     public ToDo createTodoResultSet(ResultSet resultSet) throws SQLException {
         return new ToDo(
                 resultSet.getInt("todo_id"),

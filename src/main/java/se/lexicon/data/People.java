@@ -9,6 +9,7 @@ public interface People {
     List<Person> findAll();
     Person findById(int id);
     List<Person> findByName(String name);
+    List<Person> findByLName(String lName);
     Person upDate(Person person);
     boolean deleteById(int id);
 

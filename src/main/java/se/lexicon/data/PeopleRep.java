@@ -9,12 +9,14 @@ import java.util.List;
 
 public class PeopleRep implements People{
 
-    // SQL Command lines queries
-    private static final String FIND_ALL     = "SELECT * FROM person";
-    private static final String FIND_BY_ID   = "SELECT * FROM person WHERE person_id = ?";
-    private static final String FIND_BY_NAME = "SELECT * FROM person WHERE first_name LIKE ?";
-    private static final String UPDATE       = "UPDATE person SET first_name = ?, last_name = ? WHERE person_id = ?";
-    private static final String DELETE       = "DELETE FROM person WHERE person_id = ?";
+    /** SQL queries (Command lines) **/
+    private static final String FIND_ALL        = "SELECT * FROM person";
+    private static final String FIND_BY_ID      = "SELECT * FROM person WHERE person_id = ?";
+    private static final String FIND_BY_NAME    = "SELECT * FROM person WHERE first_name LIKE ?";
+    private static final String FIND_BY_LNAME   = "SELECT * FROM person WHERE last_name LIKE ?";
+    private static final String UPDATE          = "UPDATE person SET first_name = ?, last_name = ? WHERE person_id = ?";
+    private static final String DELETE          = "DELETE FROM person WHERE person_id = ?";
+    private static final String CREATE_PERSON   = "INSERT INTO person (first_name, last_name) VALUES (?,?)";
 
     @Override
     public Person create(Person person) {
@@ -28,12 +30,9 @@ public class PeopleRep implements People{
         PreparedStatement statement = null;
         ResultSet keySet = null;
 
-        //SQL Command Line
-        String command = "INSERT INTO person (first_name, last_name) VALUES (?,?)";
-
         try {
             connection = DbSource.getConnection();
-            statement = connection.prepareStatement(command, Statement.RETURN_GENERATED_KEYS);
+            statement = connection.prepareStatement(CREATE_PERSON, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, person.getFirstName());
             statement.setString(2, person.getLastName());
             statement.execute();
@@ -111,6 +110,23 @@ public class PeopleRep implements People{
     }
 
     @Override
+    public List<Person> findByLName(String lName) {
+        List<Person> personList = new ArrayList<>();
+
+        try(Connection connection = DbSource.getConnection();
+            PreparedStatement statement = createFindByLName(connection, lName);
+            ResultSet resultSet = statement.executeQuery()) {
+
+            while(resultSet.next()){
+                personList.add(createPersonResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return personList;
+    }
+
+    @Override
     public Person upDate(Person person) {
         if(person.getId() == 0){
             throw new IllegalArgumentException("Cannot update, there is no person by that ID");
@@ -170,6 +186,11 @@ public class PeopleRep implements People{
     public PreparedStatement createFindByName(Connection connection, String name) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(FIND_BY_NAME);
         statement.setString(1,name.concat("%"));
+        return statement;
+    }
+    public PreparedStatement createFindByLName(Connection connection, String lName) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(FIND_BY_LNAME);
+        statement.setString(1,lName.concat("%"));
         return statement;
     }
 
