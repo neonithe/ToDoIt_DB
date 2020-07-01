@@ -11,9 +11,9 @@ public class ToDo {
     private String description;
     private LocalDate deadLine;
     private boolean done;
-    private Integer assigneeId;
+    private java.lang.Integer assigneeId;
 
-    public ToDo(int id, String title, String description, LocalDate deadLine, boolean done,Integer assigneeId) {
+    public ToDo(int id, String title, String description, LocalDate deadLine, boolean done,java.lang.Integer assigneeId) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -22,12 +22,14 @@ public class ToDo {
         this.assigneeId = assigneeId;
     }
 
-    public ToDo(String title, String description, LocalDate deadLine, boolean done, Integer assigneeId) {
+    public ToDo(String title, String description, LocalDate deadLine, boolean done, java.lang.Integer assigneeId) {
+
         this.title = title;
         this.description = description;
         this.deadLine = deadLine;
         this.done = done;
         this.assigneeId = assigneeId;
+
     }
 
     public int getId() {
@@ -66,11 +68,11 @@ public class ToDo {
         this.done = done;
     }
 
-    public int getAssigneeId() {
-        return assigneeId;
+    public java.lang.Integer getAssigneeId() {
+        return this.assigneeId;
     }
 
-    public void setAssigneeId(Integer assigneeId) {
+    public void setAssigneeId(java.lang.Integer assigneeId) {
         this.assigneeId = assigneeId;
     }
 

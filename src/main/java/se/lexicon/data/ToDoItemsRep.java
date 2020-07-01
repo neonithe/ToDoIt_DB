@@ -40,7 +40,7 @@ public class ToDoItemsRep implements ToDoItems{
             statement.setString(2, todo.getDescription());
             statement.setDate(3, Date.valueOf(todo.getDeadLine()));
             statement.setBoolean(4, todo.isDone());
-            statement.setInt(5, todo.getAssigneeId());
+            statement.setObject(5,todo.getAssigneeId(), java.sql.Types.INTEGER);
             statement.execute();
 
             keySet = statement.getGeneratedKeys();
