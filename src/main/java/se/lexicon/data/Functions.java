@@ -88,7 +88,7 @@ public class Functions {
             System.out.print("Selection:>");
             selection = input();
 
-            switch (selection){
+            switch (selection.toLowerCase()){
                 case "1":
                     System.out.print("Enter todo ID:");
                     int todoId = Integer.parseInt(input());
@@ -101,8 +101,18 @@ public class Functions {
                     runPerson.deleteById(personId);
                     System.out.println("Person ID "+personId+" deleted");
                     break;
-                case "Q":
+                case "q":
                     runUntil = false;
+                    break;
+                case "t":
+                    runTodo.findAll().forEach(System.out::println);
+                    break;
+                case "p":
+                    runPerson.findAll().forEach(System.out::println);
+                    break;
+                case "id":
+                    findOnOnlyId();
+                    break;
                 default:
                     System.out.println("Unknown selection");
                     break;
@@ -110,8 +120,8 @@ public class Functions {
         }while(runUntil);
     }
 
-    /** Update person and todo **/
-    public static void updateToDo(int findId, String title, String desc, LocalDate date, boolean done, int id)  {
+    /** Menu functions - Update person and todo **/
+    public static void updateToDo(int findId, String title, String desc, LocalDate date, boolean done, java.lang.Integer id)  {
 
         ToDo todoId = runTodo.findById(findId);
 
@@ -144,7 +154,7 @@ public class Functions {
             System.out.print("Selection:>");
             selection = input();
 
-            switch (selection){
+            switch (selection.toLowerCase()){
                 case "1":
                     System.out.println("Enter todo ID to change:");
                     int findId = Integer.parseInt(input());
@@ -165,10 +175,11 @@ public class Functions {
                     System.out.println("Current assignee: "+todo.getAssigneeId());
                     System.out.print("Enter new assignee:");
                     String person = input();
+
                     if(person.isEmpty()){
                         personIn = null;
                     } else {
-                        int i = Integer.parseInt(person);
+                        java.lang.Integer i = Integer.parseInt(person);
                         personIn = i;
                     }
                     boolean done = Boolean.parseBoolean(doneIn);
@@ -192,8 +203,17 @@ public class Functions {
                     update(fName,lName);
                     System.out.println("Person changed in database");
                     break;
-                case "Q":
+                case "q":
                     runUntil = false;
+                    break;
+                case "t":
+                    runTodo.findAll().forEach(System.out::println);
+                    break;
+                case "p":
+                    runPerson.findAll().forEach(System.out::println);
+                    break;
+                case "id":
+                    findOnOnlyId();
                     break;
                 default:
                     System.out.println("Not valid selection");
@@ -203,7 +223,7 @@ public class Functions {
         }while(runUntil);
     }
 
-    /** Create person and todo **/
+    /** Menu functions - Create person and todo **/
     public static void createPerson() {
         System.out.print("Enter first name:");
         String fName = input();
@@ -231,7 +251,7 @@ public class Functions {
         if(person.isEmpty()){
             personIn = null;
         } else {
-            int i = Integer.parseInt(person);
+            java.lang.Integer i = Integer.parseInt(person);
             personIn = i;
         }
 
@@ -244,10 +264,10 @@ public class Functions {
         System.out.println("Todo created to database");
     }
 
-    /** Find persons or todos **/
+    /** Menu functions - Find persons or todos **/
     public static void findPersonToDo() {
         do {
-            System.out.println("FIND ----------------------------------------------------------\n" +
+            System.out.println("FIND ------------------------------[T = All todo][P = All person]\n" +
                     "1: Todo: Find by ID             | 5: Person: Find by ID\n" +
                     "2: Todo: Find by done status    | 6: Person: Find by Firstname\n" +
                     "3: Todo: Find by assignee       | 7: Person: Find by Lastname\n" +
@@ -255,7 +275,7 @@ public class Functions {
             System.out.print("Selection:>");
             selection = input();
 
-            switch (selection){
+            switch (selection.toLowerCase()){
                 case "1":
                     System.out.print("Enter todo ID:");
                     int sel1 = Integer.parseInt(input());
@@ -289,8 +309,17 @@ public class Functions {
                     String sel6 = input();
                     runPerson.findByLName(sel6).forEach(System.out::println);
                     break;
-                case "Q":
+                case "q":
                     runUntil = false;
+                    break;
+                case "t":
+                    runTodo.findAll().forEach(System.out::println);
+                    break;
+                case "p":
+                    runPerson.findAll().forEach(System.out::println);
+                    break;
+                case "id":
+                    findOnOnlyId();
                     break;
                 default:
                     System.out.println("Not valid selection");
@@ -319,8 +348,39 @@ public class Functions {
         return person;
     }
 
-
-
-
+    /** FIND AND PRINT ONLY ID (Console command "id") **/
+    public static void findOnOnlyId(){
+        System.out.println("---------------------------------------------------------------");
+        System.out.print("TODO ID: \t\t\t");
+        for(ToDo i : runTodo.findAll()){
+            System.out.print(i.getId()+"|");
+        }
+        System.out.println("");
+        System.out.print("PERSON ID: \t\t\t");
+        for(Person i : runPerson.findAll()){
+            System.out.print(i.getId()+"|");
+        }
+        System.out.println("");
+        System.out.print("DONE ID: \t\t\t");
+        for(ToDo i : runTodo.findByDoneStatus(true)){
+            System.out.print(i.getId()+"|");
+        }
+        System.out.println("");
+        System.out.print("NOT DONE ID: \t\t");
+        for(ToDo i : runTodo.findByDoneStatus(false)){
+            System.out.print(i.getId()+"|");
+        }
+        System.out.println("");
+        System.out.print("UNASSIGNED TODO ID: ");
+        for(ToDo i : runTodo.findByUnassignedToDoItems()){
+            System.out.print(i.getId()+"|");
+        }
+        System.out.println("");
+        System.out.print("ASSIGNED TODO ID: \t");
+        for(ToDo i : runTodo.findByAssigned()){
+            System.out.print(i.getId()+"|");
+        }
+        System.out.println("");
+    }
 
 }

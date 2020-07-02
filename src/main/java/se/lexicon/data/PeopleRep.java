@@ -170,7 +170,7 @@ public class PeopleRep implements People{
         return deleted;
     }
 
-    /** Create sets **/
+    /** Create queries sets **/
     public Person createPersonResultSet(ResultSet resultSet) throws SQLException {
         return new Person(
                 resultSet.getInt("person_id"),
@@ -210,4 +210,5 @@ public class PeopleRep implements People{
         e.printStackTrace();
     }
     }
+
 }

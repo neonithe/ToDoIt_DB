@@ -7,18 +7,18 @@ import java.util.Scanner;
 
 public class App 
 {
+
     private static People runPerson = new PeopleRep();
     private static ToDoItems runTodo = new ToDoItemsRep();
-
+    private static boolean runUntil = true;
+    private static String selection = "";
+    private static Scanner input = new Scanner(System.in);
 
     public static void main( String[] args ) throws SQLException {
 
         /** Get (test) connection to database START**/
         Functions.connection();
         /** Get (test) connection to database END**/
-
-        boolean runUntil = true;
-        String selection ="";
 
         do{
             System.out.println("--------------------------- Menu ---------------------------");
@@ -29,8 +29,9 @@ public class App
                                "5: Update (todos or persons) |  0: Delete (todos or persons)\n"+
                                "Q: quit");
             System.out.print("Selection:>");
-            selection = input();
-            switch (selection){
+            selection = input.nextLine();
+
+            switch (selection.toLowerCase()){
                 case "1":
                     Functions.createPerson();
                     break;
@@ -61,9 +62,12 @@ public class App
                 case "0":
                     Functions.deleteToDoPerson();
                     break;
-                case "Q":
+                case "q":
                     System.out.println("Application Terminated");
                     runUntil = false;
+                    break;
+                case "id":
+                    Functions.findOnOnlyId();
                     break;
 
                 default:
@@ -72,11 +76,6 @@ public class App
 
         }while(runUntil);
 
-    }
-
-    public static String input(){
-        Scanner input = new Scanner(System.in);
-        return input.nextLine();
     }
 
 }

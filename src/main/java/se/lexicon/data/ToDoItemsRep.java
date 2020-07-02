@@ -15,6 +15,7 @@ public class ToDoItemsRep implements ToDoItems{
     private static final String FIND_BY_ID      = "SELECT * FROM todo_item WHERE todo_id = ?";
     private static final String FIND_ALL_DONE   = "SELECT * FROM todo_item WHERE done = ?";
     private static final String FIND_ASSIGNEE   = "SELECT * FROM todo_item WHERE assignee_id = ?";
+    private static final String FIND_ASSIGNED   = "SELECT * FROM todo_item WHERE assignee_id IS NOT NULL";
     private static final String FIND_UNASSIGNED = "SELECT * FROM todo_item WHERE assignee_id IS NULL";
     private static final String UPDATE          = "UPDATE todo_item SET title = ?, description = ?, deadline = ?, done = ?, assignee_id = ? WHERE todo_id = ?";
     private static final String DELETE          = "DELETE FROM todo_item WHERE todo_id = ?";
@@ -71,7 +72,6 @@ public class ToDoItemsRep implements ToDoItems{
 
             while (resultSet.next()) {
                 todoList.add(createTodoResultSet(resultSet));
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -143,6 +143,25 @@ public class ToDoItemsRep implements ToDoItems{
 
         try(Connection connection = DbSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(FIND_UNASSIGNED);
+            ResultSet resultSet = statement.executeQuery()){
+
+            while(resultSet.next()){
+                toDoList.add(createTodoResultSet(resultSet));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return toDoList;
+    }
+
+    @Override
+    public List<ToDo> findByAssigned() {
+        List<ToDo> toDoList = new ArrayList<>();
+
+        try(Connection connection = DbSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(FIND_ASSIGNED);
             ResultSet resultSet = statement.executeQuery()){
 
             while(resultSet.next()){

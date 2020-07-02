@@ -12,6 +12,7 @@ public interface ToDoItems {
     List<ToDo> findByDoneStatus(boolean status);
     List<ToDo> findByAssignee(Person person);
     List<ToDo> findByUnassignedToDoItems();
+    List<ToDo> findByAssigned();
     ToDo upDate(ToDo todo);
     boolean deleteById(int id);
 
