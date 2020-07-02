@@ -33,14 +33,17 @@ public class Functions {
     }
     public static void setToDoneOrNot(){
 
-        System.out.println("Change status-------------------");
+        System.out.println("Change status -------------------");
         System.out.print("Enter todo ID:");
             int id = Integer.parseInt(input());
         System.out.print("Enter status (true / false):");
             String status = input();
 
+            ToDo todo = runTodo.findById(id);
             boolean done = Boolean.parseBoolean(status);
-            getToDo(id).setDone(done);
+            todo.setDone(done);
+            runTodo.upDate(todo);
+
         System.out.println("Status changed");
     }
     public static void addPersonToDo(){
@@ -156,7 +159,7 @@ public class Functions {
 
             switch (selection.toLowerCase()){
                 case "1":
-                    System.out.println("Enter todo ID to change:");
+                    System.out.print("Enter todo ID to change:");
                     int findId = Integer.parseInt(input());
                     ToDo todo = runTodo.findById(findId);
                     System.out.println("---------------------------");
@@ -176,12 +179,20 @@ public class Functions {
                     System.out.print("Enter new assignee:");
                     String person = input();
 
+                    int gotNumber = Integer.parseInt(person);
+
+                    if(runPerson.findById(gotNumber) == null){
+                        System.out.println("There is noone with that number");
+                        break;
+                    }
+
                     if(person.isEmpty()){
                         personIn = null;
                     } else {
-                        java.lang.Integer i = Integer.parseInt(person);
-                        personIn = i;
+                        java.lang.Integer toInt = Integer.parseInt(person);
+                        personIn = toInt;
                     }
+
                     boolean done = Boolean.parseBoolean(doneIn);
                     LocalDate newDate = LocalDate.parse(date);
                     updateToDo(findId,title,desc,newDate,done,personIn);
@@ -192,6 +203,7 @@ public class Functions {
                     System.out.println("Enter person ID:");
                     int findId2 = Integer.parseInt(input());
                     Person person2 = runPerson.findById(findId2);
+
                     System.out.println("---------------------------");
                     System.out.println("Current FirstName: "+person2.getFirstName());
                     System.out.print("Enter new FirstName:");
@@ -208,13 +220,13 @@ public class Functions {
                     break;
                 case "t":
                     runTodo.findAll().forEach(System.out::println);
-                    break;
+
                 case "p":
                     runPerson.findAll().forEach(System.out::println);
-                    break;
+
                 case "id":
                     findOnOnlyId();
-                    break;
+
                 default:
                     System.out.println("Not valid selection");
                     break;
@@ -282,9 +294,25 @@ public class Functions {
                     findByIdTodo(sel1);
                     break;
                 case "2":
-                    System.out.print("Enter status [ True or False ]:");
+                    System.out.println("1: DONE \n2: NOT DONE");
+                    System.out.print("Selection:>");
+                    String sel = input();
+                    switch (sel){
+                        case "1":
+                            System.out.println("Todo's that are done -----------------------------------------");
+                            runTodo.findByDoneStatus(true).forEach(System.out::println);
+                            break;
+                        case "2":
+                            System.out.println("Todo's that are not done -------------------------------------");
+                            runTodo.findByDoneStatus(false).forEach(System.out::println);
+                            break;
+                        default:
+                            System.out.println("Not valid selection");
+                            break;
+                    }
+                 /*   System.out.print("Enter status [ True or False ]:");
                     boolean sel2 = Boolean.parseBoolean(input());
-                    runTodo.findByDoneStatus(sel2).forEach(System.out::println);
+                    runTodo.findByDoneStatus(sel2).forEach(System.out::println);*/
                     break;
                 case "3":
                     System.out.print("Enter person ID:");
@@ -297,7 +325,11 @@ public class Functions {
                 case "5":
                     System.out.print("Enter person ID:");
                     int sel4 = Integer.parseInt(input());
-                    System.out.println(findById(sel4));
+                    if(findById(sel4) == null){
+                        System.out.println("");
+                    } else {
+                        System.out.println(findById(sel4));
+                    }
                     break;
                 case "6":
                     System.out.print("Enter person first name:");
