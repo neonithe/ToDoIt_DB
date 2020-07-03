@@ -6,14 +6,15 @@ import se.lexicon.model.ToDo;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public class Functions {
 
-    private static People runPerson = new PeopleRep();
-    private static ToDoItems runTodo = new ToDoItemsRep();
-    private static boolean runUntil = true;
-    private static String selection ="";
+    private static People       runPerson = new PeopleRep();
+    private static ToDoItems    runTodo = new ToDoItemsRep();
+    private static boolean      runUntil = true;
+    private static String       selection ="";
 
     /** Get (test) connection to database **/
     public static void connection() throws SQLException {
@@ -383,36 +384,37 @@ public class Functions {
     /** FIND AND PRINT ONLY ID (Console command "id") **/
     public static void findOnOnlyId(){
         System.out.println("---------------------------------------------------------------");
-        System.out.print("TODO ID: \t\t\t");
+        System.out.print(runTodo.findAll().size()+"\t | TODO ID: \t\t\t");
         for(ToDo i : runTodo.findAll()){
             System.out.print(i.getId()+"|");
         }
         System.out.println("");
-        System.out.print("PERSON ID: \t\t\t");
+        System.out.print(runPerson.findAll().size()+"\t | PERSON ID: \t\t\t");
         for(Person i : runPerson.findAll()){
             System.out.print(i.getId()+"|");
         }
         System.out.println("");
-        System.out.print("DONE ID: \t\t\t");
+        System.out.print(runTodo.findByDoneStatus(true).size()+"\t | DONE ID: \t\t\t");
         for(ToDo i : runTodo.findByDoneStatus(true)){
             System.out.print(i.getId()+"|");
         }
         System.out.println("");
-        System.out.print("NOT DONE ID: \t\t");
+        System.out.print(runTodo.findByDoneStatus(false).size()+"\t | NOT DONE ID: \t\t");
         for(ToDo i : runTodo.findByDoneStatus(false)){
             System.out.print(i.getId()+"|");
         }
         System.out.println("");
-        System.out.print("UNASSIGNED TODO ID: ");
+        System.out.print(runTodo.findByUnassignedToDoItems().size()+"\t | UNASSIGNED TODO ID: \t");
         for(ToDo i : runTodo.findByUnassignedToDoItems()){
             System.out.print(i.getId()+"|");
         }
         System.out.println("");
-        System.out.print("ASSIGNED TODO ID: \t");
+        System.out.print(runTodo.findByAssigned().size()+"\t | ASSIGNED TODO ID: \t");
         for(ToDo i : runTodo.findByAssigned()){
             System.out.print(i.getId()+"|");
         }
         System.out.println("");
+        System.out.println("---------------------------------------------------------------");
     }
 
 }

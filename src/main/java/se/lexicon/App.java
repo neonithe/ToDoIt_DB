@@ -28,7 +28,7 @@ public class App
                                "4: Change assignee           |  9: Find person or todo \n"+
                                "5: Update (todos or persons) |  0: Delete (todos or persons)\n"+
                                "Q: quit");
-            System.out.print("Selection:>");
+              System.out.print("Selection:>");
             selection = input.nextLine();
 
             switch (selection.toLowerCase()){
@@ -69,7 +69,9 @@ public class App
                 case "id":
                     Functions.findOnOnlyId();
                     break;
-
+                case "test":
+                    //Functions.testNullFunction();
+                    break;
                 default:
                     System.out.println("Unknown selection, please try again");
             }
